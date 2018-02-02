@@ -8,7 +8,6 @@
 //
 // Dada a seguinte entrada, sabemos que A depende diretamente de B e C, e C depende de G, portanto A também depende de G:
 //
-//
 //   A   B   C
 //   B   C   E
 //   C   G
@@ -33,26 +32,30 @@ core['D'] = ['A', 'F']
 core['E'] = ['F']
 core['F'] = ['H']
 
-function acoplamento( index, arr ){
+function acoplamento( index, arr = [] ){
 
-    if( typeof core[index] === 'undefined' ){
+    if( !core[index] ){
         arr.push( index )
-        return arr;
+        return arr
     }
 
     core[index].map( (cur) =>{
         acoplamento( cur, arr)
-        let i = arr.findIndex( (c) => { return c == cur } );
-        if( i == -1 ) arr.push( cur )
+
+        if( arr.findIndex( (c) => c == cur ) == -1 )
+            arr.push( cur )
     })
 
     return arr.sort()
     .reduce( (acc,val) => {
-        let i = acc.findIndex( (c) => { return c == val } );
-        if( i < 0 ) acc.push(val)
-        return acc;
-    }, []);
+
+        if( acc.findIndex( (c) => c == val ) < 0 )
+            acc.push(val)
+
+        return acc
+
+    }, [])
 
 }
 
-console.log('A',  acoplamento('A', []) )
+console.log('A',  acoplamento('A') )
