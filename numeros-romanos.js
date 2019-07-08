@@ -45,7 +45,7 @@ const arabico2romano = (algarismo, absoluto) => {
         }
 
         if (absoluto == 5) {
-            idx = arabicos.findIndex(cur => cur == absoluto);
+            idx = arabicos.findIndex(cur => cur == absoluto * algarismo);
             return romanos[idx];
         }
 
@@ -67,6 +67,27 @@ const arabico2romano = (algarismo, absoluto) => {
 
 }
 
+const romano2arabico = (arrRomanos) => {
+    if (/([I]{4,}|[V]{4,}|[X]{4,}|[L]{4,}|[C]{4,}|[D]{4,}|[M]{4,})/i.test(arrRomanos.join(''))) {
+        throw 'Numero romano inválido';
+    }
+
+    let sum = 0;
+    for (let n in arrRomanos.reverse()) {
+
+        let idx = romanos.findIndex(cur => cur == arrRomanos[n]);
+        let previdx = romanos.findIndex(cur => cur == arrRomanos[parseFloat(n) - 1]);
+
+        if (arabicos[idx] < arabicos[previdx]) {
+            sum -= arabicos[idx];
+        } else {
+            sum += arabicos[idx];
+        }
+    }
+
+    return sum;
+}
+
 const calc = (number) => {
     const result = [];
     const splitNumber = String(number).split('');
@@ -78,7 +99,7 @@ const calc = (number) => {
             let algarismo = Math.pow(10, tempTamanho) / 10;
 
             if (tempTamanho > 4) {
-                throw 'Uma vez que na numeração romana só podemos repetir cada letra três vezes, o maior número possível de escrever seria 3999';
+                throw new Error('Uma vez que na numeração romana só podemos repetir cada letra três vezes, o maior número possível de escrever seria 3999');
             } else {
                 result.push(arabico2romano(algarismo, n));
             }
@@ -86,36 +107,38 @@ const calc = (number) => {
             --tempTamanho;
         }
     } else {
-
-        if (/([I]{4,}|[V]{4,}|[X]{4,}|[L]{4,}|[C]{4,}|[D]{4,}|[M]{4,})/i.test(splitNumber.join(''))) {
-            throw 'Numero romano inválido';
-        }
-
-        let sum = 0;
-        for (let n in splitNumber.reverse()) {
-
-            let idx = romanos.findIndex(cur => cur == splitNumber[n]);
-            let previdx = romanos.findIndex(cur => cur == splitNumber[parseFloat(n) - 1]);
-
-            if (arabicos[idx] < arabicos[previdx]) {
-                sum -= arabicos[idx];
-            } else {
-                sum += arabicos[idx];
-            }
-        }
-
+        const sum = romano2arabico(splitNumber);
         result.push(sum)
-
     }
 
 
     return result.join('');
 }
 
-console.log(calc(2346), calc('MMCCCXLVI'));
-console.log('');
-console.log(calc('CLVIII'), calc(158));
-console.log('');
-console.log(calc('MMMCMXCIX'), calc('3999'));
-console.log('');
-console.log(calc('XXX'), calc(30));
+const f = Array.from({ length: 3999 });
+
+/*
+teste
+*/
+// const resultTeste = [];
+// for (const t in f) {
+//     const number = parseFloat(t) + 1;
+//     const romano = calc(number);
+//     const arabico = calc(romano);
+//     if (arabico != number) {
+//         console.log(romano, arabico, number);
+//     } else {
+//         resultTeste.push([romano, arabico, number])
+//     }
+// }
+// console.log(resultTeste);
+
+// console.log(calc(2346), calc('MMCCCXLVI'));
+// console.log('');
+// console.log(calc('CL'), calc(150));
+// console.log('');
+// console.log(calc('CLVIII'), calc(158));
+// console.log('');
+// console.log(calc('MMMCMXCIX'), calc('3999'));
+// console.log('');
+// console.log(calc('XXX'), calc(30));
