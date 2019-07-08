@@ -7,3 +7,4 @@
 * [Escrevendo no Celular](http://dojopuzzles.com/problemas/exibe/escrevendo-no-celular/) - escrevendo-no-celular.js
 * [Roleta Romana](http://dojopuzzles.com/problemas/exibe/roleta-romana/) - roleta-romana.js
 * [Buraco nas Letras](http://dojopuzzles.com/problemas/exibe/buracos-nas-letras/) - buraco-nas-letras.js
+* [Numeros Romanos](http://dojopuzzles.com/problemas/exibe/numeros-romanos/) - numeros-romanos.js
